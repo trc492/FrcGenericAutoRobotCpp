@@ -75,6 +75,7 @@
 #define ROTATE_POWER                     0.0
 
 #include <SpeedController.h>
+
 #if defined(USE_DIFFERENTIAL_DRIVE)
   #include <Drive/DifferentialDrive.h>
 #elif defined(USE_MECANUM_DRIVE)

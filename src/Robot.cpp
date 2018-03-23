@@ -256,6 +256,6 @@ public:
         }
     }   // AutonomousPeriodic
 
-};
+};	// class Robot
 
 START_ROBOT_CLASS(Robot)

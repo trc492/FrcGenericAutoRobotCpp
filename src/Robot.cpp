@@ -22,7 +22,7 @@
 
 /**
  * This is a generic autonomous program that drives the robot with the specified power for a set amount of time.
- * It works with most of the 2018 legal motor controllers and 2 or 4 motor drive configured robots.
+ * It works with all 2018 legal motor controllers and 2 or 4-motor drive configured robots.
  * To use this program, you must go through each of the "TODO" sections and select the appropriate configurations
  * and numbers.
  */
@@ -37,6 +37,7 @@
 // TODO: Need to select motor controller type.
 //
 //#define USE_DMC60
+//#define USE_NIDEC
 //#define USE_JAGUAR
 //#define USE_SD540
 #define USE_SPARK
@@ -50,29 +51,35 @@
 // TODO: Need to update the channel numbers.
 //       Depending on the motor controller type, these could be PWM channels or CAN IDs.
 //
-#define LEFT_CHANNEL                    0
-#define RIGHT_CHANNEL                   1
+#define LEFT_CHANNEL                            0
+#define RIGHT_CHANNEL                           1
+#define BRUSHLESS_LEFT_DIO_CHANNEL              0
+#define BRUSHLESS_RIGHT_DIO_CHANNEL             1
 
-#define FRONT_LEFT_CHANNEL              0
-#define REAR_LEFT_CHANNEL               1
-#define FRONT_RIGHT_CHANNEL             2
-#define REAR_RIGHT_CHANNEL              3
+#define FRONT_LEFT_CHANNEL                      0
+#define REAR_LEFT_CHANNEL                       1
+#define FRONT_RIGHT_CHANNEL                     2
+#define REAR_RIGHT_CHANNEL                      3
+#define BRUSHLESS_FRONT_LEFT_DIO_CHANNEL        0
+#define BRUSHLESS_REAR_LEFT_DIO_CHANNEL         1
+#define BRUSHLESS_FRONT_RIGHT_DIO_CHANNEL       2
+#define BRUSHLESS_REAR_RIGHT_DIO_CHANNEL        3
 
 //
 // TODO: Need to determine if motors need to be inverted.
 //
-#define LEFT_MOTOR_INVERTED             true
-#define RIGHT_MOTOR_INVERTED            false
+#define LEFT_MOTOR_INVERTED                     true
+#define RIGHT_MOTOR_INVERTED                    false
 
 //
 // TODO: Need to tune the following numbers.
 //
-#define DRIVE_TIME_IN_SEC                3.0
-#define LEFT_DRIVE_POWER                 0.5
-#define RIGHT_DRIVE_POWER                0.5
-#define X_DRIVE_POWER                    0.0
-#define Y_DRIVE_POWER                    0.5
-#define ROTATE_POWER                     0.0
+#define DRIVE_TIME_IN_SEC                       3.0
+#define LEFT_DRIVE_POWER                        0.5
+#define RIGHT_DRIVE_POWER                       0.5
+#define X_DRIVE_POWER                           0.0
+#define Y_DRIVE_POWER                           0.5
+#define ROTATE_POWER                            0.0
 
 #include <SpeedController.h>
 
@@ -84,6 +91,8 @@
 
 #if defined(USE_DMC60)
   #include <DMC60.h>
+#elif defined(USE_NIDEC)
+  #include <NidecBrushless.h>
 #elif defined(USE_JAGUAR)
   #include <Jaguar.h>
 #elif defined(USE_SD540)
@@ -129,6 +138,9 @@ public:
       #if defined(USE_DMC60)
         leftMotor = new DMC60(LEFT_CHANNEL);
         rightMotor = new DMC60(RIGHT_CHANNEL);
+      #elif defined(USE_NIDEC)
+        leftMotor = new NidecBrushless(LEFT_CHANNEL, BRUSHLESS_LEFT_DIO_CHANNEL);
+        rightMotor = new NidecBrushless(RIGHT_CHANNEL, BRUSHLESS_RIGHT_DIO_CHANNEL);
       #elif defined(USE_JAGUAR)
         leftMotor = new Jaguar(LEFT_CHANNEL);
         rightMotor = new Jaguar(RIGHT_CHANNEL);
@@ -171,6 +183,11 @@ public:
         rearLeftMotor = new DMC60(REAR_LEFT_CHANNEL);
         frontRightMotor = new DMC60(FRONT_RIGHT_CHANNEL);
         rearRightMotor = new DMC60(REAR_RIGHT_CHANNEL);
+      #elif defined(USE_NIDEC)
+        frontLeftMotor = new NidecBrushless(FRONT_LEFT_CHANNEL, BRUSHLESS_FRONT_LEFT_DIO_CHANNEL);
+        rearLeftMotor = new NidecBrushless(REAR_LEFT_CHANNEL, BRUSHLESS_REAR_LEFT_DIO_CHANNEL);
+        frontRightMotor = new NidecBrushless(FRONT_RIGHT_CHANNEL, BRUSHLESS_FRONT_RIGHT_DIO_CHANNEL);
+        rearRightMotor = new NidecBrushless(REAR_RIGHT_CHANNEL, BRUSHLESS_REAR_RIGHT_DIO_CHANNEL);
       #elif defined(USE_JAGUAR)
         frontLeftMotor = new Jaguar(FRONT_LEFT_CHANNEL);
         rearLeftMotor = new Jaguar(REAR_LEFT_CHANNEL);

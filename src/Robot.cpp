@@ -122,7 +122,7 @@ private:
 #elif defined(USE_MECANUM_DRIVE)
     MecanumDrive *m_myMecanumRobot = nullptr;
 #endif
-    double stopTime;
+    double m_stopTime;
 
 public:
     /**
@@ -247,7 +247,7 @@ public:
      */
     void AutonomousInit()
     {
-        stopTime = Timer::GetFPGATimestamp() + DRIVE_TIME_IN_SEC;
+        m_stopTime = Timer::GetFPGATimestamp() + DRIVE_TIME_IN_SEC;
     }   // AutonomousInit
 
     /**
@@ -255,7 +255,7 @@ public:
      */
     void AutonomousPeriodic()
     {
-        if (Timer::GetFPGATimestamp() < stopTime)
+        if (Timer::GetFPGATimestamp() < m_stopTime)
         {
 #if defined(USE_DIFFERENTIAL_DRIVE)
             m_myDifferentialRobot->TankDrive(LEFT_DRIVE_POWER, RIGHT_DRIVE_POWER);

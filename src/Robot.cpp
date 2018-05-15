@@ -82,6 +82,8 @@
 #define ROTATE_POWER                            0.0
 
 #include <SpeedController.h>
+#include <IterativeRobot.h>
+#include <Timer.h>
 
 #if defined(USE_DIFFERENTIAL_DRIVE)
   #include <Drive/DifferentialDrive.h>
@@ -110,9 +112,6 @@
 #elif defined(USE_VICTORSPX)
   #include <ctre/Phoenix.h>
 #endif
-
-#include <IterativeRobot.h>
-#include <Timer.h>
 
 class Robot: public IterativeRobot
 {
